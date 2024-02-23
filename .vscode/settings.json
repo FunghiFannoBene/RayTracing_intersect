@@ -1,7 +1,8 @@
 {
 	"files.associations": {
 		"*.cpp": "cpp",
-		"mlx.h": "c"
+		"mlx.h": "c",
+		"all.h": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }

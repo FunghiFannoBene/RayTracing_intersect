@@ -4,6 +4,12 @@
 # define DOWN 65364
 # define LEFT 65361
 # define RIGHT 65363
+# define SPACE 32
+# define SCALE 4
+# define SAMPLES_PER_PIXEL 4
+// # define ANIMATION 1
+#define WINWIDTH 2880
+#define WINHEIGHT 1800
 #include <X11/X.h>
 #include <X11/keysym.h>
 #include <math.h>
@@ -13,8 +19,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <FL/math.h>
+#include <X11/Xlib.h>
+#include <X11/Xatom.h>
 #include "minilibx-linux/mlx.h"
 #define EPSILON 1e-6
+
 typedef struct vec3
 {
 	double x;
@@ -65,4 +74,51 @@ typedef struct general
 	Plane *plane;
 } general;
 
+typedef struct s_calc
+{
+	v3 oc;
+	v3 rotate;
+	v3 oc_per;
+	v3 rdir_per;
+	float a;
+	float b;
+	float c;
+	float discriminant;
+	float dot_dir_axis;
+	float dot_oc_axis;
+
+
+	float sqrtDiscriminant;
+    float t0;
+    float t1;
+
+    float z0;
+    float z1;
+    float hit;
+    float t_hit;
+} cyl_calc;
+
+typedef struct {
+    v3 origin;
+    v3 direction;
+    float intensity;
+} Light;
+
+void init_all(win *win);
+int close_x();
+float dot(v3 u, v3 v);
+double pitagora(v3 dir);
+float distance(v3 a, v3 b);
+v3 normalize(v3 dir);
+v3 subtract(v3 a, v3 b);
+v3 add(v3 a, v3 b);
+v3 multiply(v3 a, v3 b);
+v3 scale(v3 a, float b);
+v3 point_at_parameter(v3 ray_origin, v3 ray_direction, float t);
+int renderize(int key, general *general);
+int render_general(general *g);
+int mouserender(int x, int y, general *g);
+void render(camera cam, cylinder cylinder, win win, Plane plane);
+int renderize2(int key, general *general);
+int calculate_base(cyl_calc c, cylinder cyl, int *flag, float *t_hit, v3 ray_origin, v3 ray_dir);
 #endif
